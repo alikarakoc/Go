@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
 
 type User struct {
@@ -61,12 +62,24 @@ func addUserHandler(c echo.Context) error {
 
 	return c.String(http.StatusOK, "Başarılı")
 }
+func mainAdminHandler(c echo.Context) error {
+	return c.String(http.StatusOK, "Admin endpointindesin.")
+}
 func main() {
 	fmt.Printf("Hello World!")
 
 	e := echo.New()
+	//e.Use(middleware.Logger()) //klasik kullanım
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "method=${method}, uri=${uri}, status=${status}\n",
+	})) //custom kullanım
 
 	e.GET("/main", mainHandler)
+
+	adminGroup := e.Group("/admin", middleware.Logger())
+
+	adminGroup.GET("/main", mainAdminHandler)
+
 	e.GET("/user/:data", userHandler)
 	e.POST("/user", addUserHandler)
 
