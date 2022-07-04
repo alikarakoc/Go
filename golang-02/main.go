@@ -1,11 +1,19 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/labstack/echo"
 )
+
+type User struct {
+	Username string "json:'username'"
+	Name     string "json:'name'"
+	Surname  string "json:'surname'"
+}
 
 func mainHandler(c echo.Context) error {
 	return c.String(http.StatusOK, "Main endpointine GET isteği yapıldı.")
@@ -35,6 +43,24 @@ func userHandler(c echo.Context) error {
 
 	return c.String(http.StatusBadRequest, "Yalnızca JSON veya String parametresini kullanabilirsiniz.")
 }
+func addUserHandler(c echo.Context) error {
+
+	user := User{}
+
+	body, err := ioutil.ReadAll(c.Request().Body)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(body, &user)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(user)
+
+	return c.String(http.StatusOK, "Başarılı")
+}
 func main() {
 	fmt.Printf("Hello World!")
 
@@ -42,6 +68,7 @@ func main() {
 
 	e.GET("/main", mainHandler)
 	e.GET("/user/:data", userHandler)
+	e.POST("/user", addUserHandler)
 
 	e.Start(":8000")
 }
