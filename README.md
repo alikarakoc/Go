@@ -11,7 +11,7 @@ go mod init ProjectName
 go get github.com/labstack/echo/v4
 go get github.com/labstack/echo/middleware
 ```
-###projeyi çalıştırmak için aşağıdaki komutu kullanıyoruz
+##projeyi çalıştırmak için aşağıdaki komutu kullanıyoruz
 ```
 go run main.go
 ```
