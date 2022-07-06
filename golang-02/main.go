@@ -77,7 +77,12 @@ func main() {
 	e.GET("/main", mainHandler)
 
 	adminGroup := e.Group("/admin", middleware.Logger())
-
+	adminGroup.Use(middleware.BasicAuth(func(username, password string, ctx echo.Context) (bool, error) {
+		if username == "admin" && password == "123" {
+			return true, nil
+		}
+		return false, nil
+	}))
 	adminGroup.GET("/main", mainAdminHandler)
 
 	e.GET("/user/:data", userHandler)
