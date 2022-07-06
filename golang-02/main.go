@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
@@ -17,7 +19,11 @@ type User struct {
 }
 
 func mainHandler(c echo.Context) error {
-	return c.String(http.StatusOK, "Main endpointine GET isteği yapıldı.")
+	dbUserName, exist := os.LookupEnv("DB_USERNAME")
+	if !exist {
+		fmt.Printf("Not found")
+	}
+	return c.String(http.StatusOK, "Main endpointine GET isteği yapıldı. Enviroment okunan değer:"+dbUserName)
 }
 func userHandler(c echo.Context) error {
 
@@ -65,8 +71,12 @@ func addUserHandler(c echo.Context) error {
 func mainAdminHandler(c echo.Context) error {
 	return c.String(http.StatusOK, "Admin endpointindesin.")
 }
+func init() {
+	if err := godotenv.Load(); err != nil {
+		fmt.Printf("No .env file found")
+	}
+}
 func main() {
-	fmt.Printf("Hello World!")
 
 	e := echo.New()
 	//e.Use(middleware.Logger()) //klasik kullanım
