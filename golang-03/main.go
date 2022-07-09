@@ -12,10 +12,6 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Hello World")
 		d, err := ioutil.ReadAll(r.Body)
-		if err != nil {
-			http.Error(w, "Oops", http.StatusBadRequest)
-			return
-		}
 
 		fmt.Fprintf(w, "Data %s", d)
 	})
