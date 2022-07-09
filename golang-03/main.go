@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -17,7 +16,6 @@ func main() {
 			return
 		}
 
-		fmt.Fprintf(w, "Data %s", d)
 	})
 	http.HandleFunc("/goodbye", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Goodbye World")
