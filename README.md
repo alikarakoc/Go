@@ -20,3 +20,8 @@ go run main.go
 ```
 go get github.com/joho/godotenv
 ```
+
+## gorilla install
+```
+ go get "github.com/gorilla/mux"
+```
