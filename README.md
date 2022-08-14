@@ -28,4 +28,17 @@ go get github.com/joho/godotenv
 
 
 
+## gorilla/mux router
+```
+go get -u github.com/gorilla/mux
+```
 
+## lib/pq driver
+```
+go get github.com/lib/pq
+```
+
+## joho/godotenv
+```
+go get github.com/joho/godotenv
+```
