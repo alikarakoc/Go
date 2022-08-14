@@ -10,6 +10,8 @@ import (
 	"os"
 	"strconv"
 
+	uuid "github.com/satori/go.uuid"
+
 	"github.com/gorilla/mux"
 
 	"github.com/joho/godotenv"
@@ -71,13 +73,13 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	params := mux.Vars(r)
 
-	id, err := strconv.Atoi(params["id"])
+	id, err := uuid.FromString(params["id"])
 
 	if err != nil {
 		log.Fatalf("Unable to convert the string into int.  %v", err)
 	}
 
-	user, err := getUser(int64(id))
+	user, err := getUser(id)
 
 	if err != nil {
 		log.Fatalf("Unable to get user. %v", err)
@@ -153,7 +155,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	msg := fmt.Sprintf("User updated successfully. Total rows/record affected %v", deletedRows)
 
 	res := response{
-		ID:      string(id),
+		ID:      string(rune(id)),
 		Message: msg,
 	}
 
@@ -181,7 +183,7 @@ func insertUser(user models.User) string {
 	return id
 }
 
-func getUser(id int64) (models.User, error) {
+func getUser(id uuid.UUID) (models.User, error) {
 	db := createConnection()
 
 	defer db.Close()
